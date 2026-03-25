@@ -19,7 +19,6 @@ const defaultData = {
   emballages: defaultEmb,
   clients: defaultClients,
   commandes: defaultCommandes,
-  productionMensuelle: defaultProdMens,
   planningProduction: defaultPlanning,
   transporteurs: defaultTransporteurs,
 };
@@ -63,14 +62,21 @@ function computeKPI(data) {
 
 export default function useLocalData() {
   const [data, setData] = useState(() => {
-    return loadFromStorage() || { ...defaultData };
+    const stored = loadFromStorage();
+    if (stored) {
+      delete stored.productionMensuelle; // never use cached version
+      return stored;
+    }
+    return { ...defaultData };
   });
 
   useEffect(() => {
     saveToStorage(data);
   }, [data]);
 
-  const kpiDirection = computeKPI(data);
+  // productionMensuelle is always fresh (rolling 12 months from current date)
+  const dataWithProd = { ...data, productionMensuelle: defaultProdMens };
+  const kpiDirection = computeKPI(dataWithProd);
 
   // --- Generic CRUD helpers ---
   const updateCollection = useCallback((key, updater) => {
@@ -112,7 +118,7 @@ export default function useLocalData() {
     emballages: data.emballages,
     clients: data.clients,
     commandes: data.commandes,
-    productionMensuelle: data.productionMensuelle,
+    productionMensuelle: defaultProdMens, // always fresh, never cached
     planningProduction: data.planningProduction,
     transporteurs: data.transporteurs,
     kpiDirection,
