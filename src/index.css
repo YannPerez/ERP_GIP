@@ -1,0 +1,352 @@
+@import "tailwindcss";
+
+/* ===== Maison Rullier Hub — Design System "New Gen" ===== */
+/* Direction: Linear / Raycast / Premium Artisanal ===== */
+
+@theme {
+  /* Palette Savoie Modernisée */
+  --color-bleu-profond: #1B2A4A;
+  --color-bleu-nuit: #0F1A2E;
+  --color-blanc-pur: #FAFBFC;
+  --color-gris-ardoise: #64748B;
+  --color-gris-clair: #E2E8F0;
+  --color-gris-fond: #F8F9FB;
+  --color-surface: #FFFFFF;
+
+  /* Accents Savoie Modernisée */
+  --color-or-brosse: #B8860B;
+  --color-or-clair: #D4A843;
+  --color-or-hover: #9A7209;
+  --color-vert-sauge: #6B8F71;
+  --color-vert-sauge-light: #E8F0E9;
+  --color-orange-terreux: #C2703E;
+  --color-orange-terreux-light: #F5E6DB;
+  --color-rouge-alerte: #DC3545;
+  --color-rouge-alerte-light: #FDE8EA;
+  --color-bleu-info: #3B7DD8;
+  --color-bleu-info-light: #E3EDF8;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Geist', system-ui, sans-serif;
+  --font-display: 'Inter', 'Geist', system-ui, sans-serif;
+}
+
+/* ===== Base ===== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-gris-fond);
+  color: var(--color-bleu-profond);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* ===== Card System (Linear-style) ===== */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.card-interactive:hover {
+  border-color: rgba(184, 134, 11, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ===== Glass Utility (for alerts & header) ===== */
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.glass-dark {
+  background: rgba(27, 42, 74, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ===== Sidebar ===== */
+
+.sidebar {
+  background: linear-gradient(180deg, var(--color-bleu-profond) 0%, var(--color-bleu-nuit) 100%);
+}
+
+/* ===== Inputs ===== */
+
+.input {
+  background: var(--color-surface);
+  border: 1px solid var(--color-gris-clair);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--color-bleu-profond);
+  transition: all 0.15s ease;
+  outline: none;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: var(--color-or-brosse);
+  box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
+}
+
+/* ===== Badges ===== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-success {
+  background: var(--color-vert-sauge-light);
+  color: var(--color-vert-sauge);
+}
+
+.badge-warning {
+  background: var(--color-orange-terreux-light);
+  color: var(--color-orange-terreux);
+}
+
+.badge-danger {
+  background: var(--color-rouge-alerte-light);
+  color: var(--color-rouge-alerte);
+}
+
+.badge-info {
+  background: var(--color-bleu-info-light);
+  color: var(--color-bleu-info);
+}
+
+.badge-neutral {
+  background: rgba(100, 116, 139, 0.08);
+  color: var(--color-gris-ardoise);
+}
+
+/* ===== Buttons ===== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--color-or-brosse) 0%, var(--color-or-clair) 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  filter: brightness(1.05);
+}
+
+.btn-primary-lg {
+  padding: 14px 28px;
+  font-size: 15px;
+  border-radius: 14px;
+  min-height: 48px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--color-surface);
+  color: var(--color-bleu-profond);
+  border: 1px solid var(--color-gris-clair);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--color-gris-fond);
+  border-color: var(--color-gris-ardoise);
+}
+
+/* ===== Tables ===== */
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.data-table thead th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-gris-ardoise);
+  border-bottom: 1px solid var(--color-gris-clair);
+}
+
+.data-table tbody td {
+  padding: 14px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background 0.1s ease;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(248, 249, 251, 0.8);
+}
+
+/* ===== Progress Bars ===== */
+
+.progress-bar {
+  height: 6px;
+  background: rgba(226, 232, 240, 0.6);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar-lg {
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* ===== Scrollbar ===== */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.4);
+}
+
+/* ===== Label style ===== */
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gris-ardoise);
+}
+
+/* ===== View Mode Toggle Pill ===== */
+
+.view-toggle-pill {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: var(--color-gris-fond);
+  border: 1px solid var(--color-gris-clair);
+  border-radius: 10px;
+  padding: 3px;
+  cursor: pointer;
+  gap: 0;
+}
+
+.view-toggle-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 76px;
+  height: calc(100% - 6px);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-bleu-profond) 0%, #243B5C 100%);
+  box-shadow: 0 2px 8px rgba(27, 42, 74, 0.25);
+  z-index: 0;
+}
+
+.view-toggle-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 8px;
+  z-index: 1;
+  position: relative;
+  color: var(--color-gris-ardoise);
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  width: 76px;
+  justify-content: center;
+}
+
+.view-toggle-option.active {
+  color: white;
+}
+
+/* ===== Sidebar Toggle Float ===== */
+
+.sidebar-toggle-pulse {
+  animation: sidebar-pulse 3s ease-in-out 2;
+}
+
+@keyframes sidebar-pulse {
+  0%, 100% { box-shadow: 0 4px 12px rgba(27, 42, 74, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(184, 134, 11, 0.4), 0 0 6px rgba(184, 134, 11, 0.15); }
+}
+
+/* ===== Micro animations ===== */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
+}
+
