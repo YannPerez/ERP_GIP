@@ -69,7 +69,7 @@ function CommandesTable({ compact }) {
           <div className="w-9 h-9 rounded-xl bg-bleu-info/8 flex items-center justify-center"><ShoppingCart className="w-4.5 h-4.5 text-bleu-info" /></div>
           <div><h3 className="text-[15px] font-semibold text-bleu-profond">Commandes</h3><p className="text-[11px] text-gris-ardoise">{commandes.length} commandes</p></div>
         </div>
-        <button className="btn-primary text-[13px]"><Plus className="w-4 h-4" /> Nouvelle</button>
+        <button onClick={() => window.dispatchEvent(new Event('open-data-manager'))} className="btn-primary text-[13px]"><Plus className="w-4 h-4" /> Nouvelle</button>
       </div>
       <div className="flex flex-wrap items-center gap-3 mb-4">
         <div className="relative flex-1 min-w-[200px] max-w-sm">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, LayoutGrid, Zap, Database } from 'lucide-react';
@@ -17,6 +17,12 @@ export default function HeaderBar() {
   const meta = routeMeta[location.pathname] || routeMeta['/'];
   const { viewMode, toggleViewMode, isCompact } = useViewMode();
   const [dmOpen, setDmOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setDmOpen(true);
+    window.addEventListener('open-data-manager', handler);
+    return () => window.removeEventListener('open-data-manager', handler);
+  }, []);
 
   return (
     <>

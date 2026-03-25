@@ -160,21 +160,34 @@ export const commandes = [
   { id: "CMD-2026-0135", client_id: 6, client_nom: "L'Alpage Doré", date: "2026-03-06", produits: [{ variante: "Sarrasin", qte_kg: 20 }, { variante: "Noix", qte_kg: 10 }], format: "5kg", statut: "livree", transporteur: "interne", montant: 300 },
 ];
 
-// --- PRODUCTION MENSUELLE (tonnage + CA) ---
-export const productionMensuelle = [
-  { mois: "Jan", tonnage: 2.2, ca: 18700 },
-  { mois: "Fév", tonnage: 2.0, ca: 17000 },
-  { mois: "Mar", tonnage: 2.5, ca: 21250 },
-  { mois: "Avr", tonnage: 2.3, ca: 19550 },
-  { mois: "Mai", tonnage: 2.8, ca: 23800 },
-  { mois: "Jun", tonnage: 2.5, ca: 21250 },
-  { mois: "Jul", tonnage: 3.0, ca: 25500 },
-  { mois: "Aoû", tonnage: 2.8, ca: 23800 },
-  { mois: "Sep", tonnage: 3.2, ca: 27200 },
-  { mois: "Oct", tonnage: 4.0, ca: 34000 },
-  { mois: "Nov", tonnage: 6.5, ca: 55250 },
-  { mois: "Déc", tonnage: 6.2, ca: 52700 },
-];
+// --- PRODUCTION MENSUELLE (rolling 12 mois, finit au mois courant) ---
+const MOIS_LABELS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+// Tonnage saisonnier par mois (index 0=Jan) — pic Nov/Déc
+const TONNAGE_BASE = [2.2, 2.0, 2.5, 2.3, 2.8, 2.5, 3.0, 2.8, 3.2, 4.0, 6.5, 6.2];
+const PRIX_MOYEN_KG = 8.5;
+
+function generateProductionMensuelle() {
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-indexed
+  const currentYear = now.getFullYear();
+  const result = [];
+
+  for (let i = 11; i >= 0; i--) {
+    let m = currentMonth - i;
+    let y = currentYear;
+    if (m < 0) { m += 12; y -= 1; }
+    const tonnage = TONNAGE_BASE[m];
+    const yearShort = String(y).slice(-2);
+    result.push({
+      mois: `${MOIS_LABELS[m]} ${yearShort}`,
+      tonnage,
+      ca: Math.round(tonnage * 1000 * PRIX_MOYEN_KG),
+    });
+  }
+  return result;
+}
+
+export const productionMensuelle = generateProductionMensuelle();
 
 // --- PLANNING DE PRODUCTION (semaine courante) ---
 export const planningProduction = [
