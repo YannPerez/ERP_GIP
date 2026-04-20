@@ -2,12 +2,12 @@ import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, Warehouse, ShoppingCart, CalendarClock,
-  Mountain, PanelLeftClose, PanelLeftOpen,
+  Mountain, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Tableau de Bord', sub: 'Direction' },
-  { to: '/entrepot', icon: Warehouse, label: 'Entrepot', sub: 'Stocks & MP' },
+  { to: '/entrepot', icon: Warehouse, label: 'Entrepôt', sub: 'Stocks & MP' },
   { to: '/commercial', icon: ShoppingCart, label: 'Commercial', sub: 'CRM & Ventes' },
   { to: '/production', icon: CalendarClock, label: 'Production', sub: 'Planning' },
 ];
@@ -15,27 +15,10 @@ const navItems = [
 export default function Sidebar({ collapsed, onToggle }) {
   return (
     <motion.aside
-      className="sidebar h-full flex flex-col flex-shrink-0 relative z-50"
+      className="sidebar h-full hidden md:flex flex-col flex-shrink-0 relative z-50"
       animate={{ width: collapsed ? 72 : 260 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
     >
-      {/* Floating toggle button — edge-mounted */}
-      <button
-        onClick={onToggle}
-        className="absolute -right-3.5 top-7 z-[60] w-7 h-7 rounded-full
-          bg-gradient-to-br from-bleu-profond to-bleu-nuit
-          border-2 border-white/20 shadow-lg shadow-bleu-profond/30
-          flex items-center justify-center text-white/80 hover:text-white
-          hover:scale-110 hover:shadow-xl hover:shadow-or-brosse/20
-          hover:border-or-brosse/40 transition-all duration-200 cursor-pointer
-          sidebar-toggle-pulse"
-      >
-        {collapsed
-          ? <PanelLeftOpen className="w-3.5 h-3.5" />
-          : <PanelLeftClose className="w-3.5 h-3.5" />
-        }
-      </button>
-
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/8 flex items-center gap-3 min-h-[68px]">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-or-brosse to-or-clair flex items-center justify-center flex-shrink-0 shadow-lg shadow-or-brosse/20">
@@ -110,6 +93,14 @@ export default function Sidebar({ collapsed, onToggle }) {
         ))}
       </nav>
 
+      {/* Toggle Button */}
+      <button
+        onClick={onToggle}
+        className="mx-3 mb-3 p-2 rounded-lg bg-white/6 hover:bg-white/12 transition-all text-white/40 hover:text-white flex items-center justify-center"
+      >
+        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+      </button>
+
       {/* Footer */}
       {!collapsed && (
         <motion.div
@@ -117,7 +108,7 @@ export default function Sidebar({ collapsed, onToggle }) {
           animate={{ opacity: 1 }}
           className="px-5 py-3 border-t border-white/6"
         >
-          <p className="text-[10px] text-white/25">Crozets artisanaux - depuis 1935</p>
+          <p className="text-[10px] text-white/25">Crozets artisanaux · depuis 1935</p>
         </motion.div>
       )}
     </motion.aside>

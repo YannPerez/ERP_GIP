@@ -44,18 +44,6 @@ export const matierespremieres = [
   },
   {
     id: 4,
-    nom: "Beurre AOP Savoie",
-    categorie: "Beurre",
-    stock_actuel_kg: 120,
-    stock_securite_kg: 80,
-    unite: "kg",
-    fournisseur: "Coopérative Laitière Beaufort",
-    dernier_approvisionnement: "2026-03-09",
-    prix_kg: 7.50,
-    allergene: false,
-  },
-  {
-    id: 5,
     nom: "Cerneaux de noix AOP Grenoble",
     categorie: "Fruits secs",
     stock_actuel_kg: 45,
@@ -68,7 +56,7 @@ export const matierespremieres = [
     type_allergene: "Noix",
   },
   {
-    id: 6,
+    id: 5,
     nom: "Noisettes du Piémont",
     categorie: "Fruits secs",
     stock_actuel_kg: 28,
@@ -81,7 +69,7 @@ export const matierespremieres = [
     type_allergene: "Noisettes",
   },
   {
-    id: 7,
+    id: 6,
     nom: "Cèpes déshydratés",
     categorie: "Champignons",
     stock_actuel_kg: 18,
@@ -93,19 +81,43 @@ export const matierespremieres = [
     allergene: false,
   },
   {
-    id: 8,
-    nom: "Beaufort AOP 12 mois",
-    categorie: "Fromage",
-    stock_actuel_kg: 65,
-    stock_securite_kg: 40,
+    id: 7,
+    nom: "Chanterelles déshydratées",
+    categorie: "Champignons",
+    stock_actuel_kg: 12,
+    stock_securite_kg: 8,
     unite: "kg",
-    fournisseur: "Fromagerie du Beaufortain",
-    dernier_approvisionnement: "2026-03-07",
-    prix_kg: 22.00,
+    fournisseur: "Champignons des Alpes",
+    dernier_approvisionnement: "2026-03-02",
+    prix_kg: 55.00,
+    allergene: false,
+  },
+  {
+    id: 8,
+    nom: "Farine de châtaigne",
+    categorie: "Farine",
+    stock_actuel_kg: 85,
+    stock_securite_kg: 50,
+    unite: "kg",
+    fournisseur: "Moulin de l'Ardèche",
+    dernier_approvisionnement: "2026-03-04",
+    prix_kg: 4.80,
     allergene: false,
   },
   {
     id: 9,
+    nom: "Ail des ours",
+    categorie: "Aromate",
+    stock_actuel_kg: 15,
+    stock_securite_kg: 10,
+    unite: "kg",
+    fournisseur: "Cueillette Sauvage Savoie",
+    dernier_approvisionnement: "2026-03-10",
+    prix_kg: 28.00,
+    allergene: false,
+  },
+  {
+    id: 10,
     nom: "Sel de Savoie",
     categorie: "Condiment",
     stock_actuel_kg: 150,
@@ -120,12 +132,18 @@ export const matierespremieres = [
 
 // --- PRODUITS FINIS ---
 export const produitsFinis = [
-  { id: 1, nom: "Crozets Nature", variante: "Nature", stock_kg: 480, seuil_critique_kg: 200, prix_vente_kg: 8.50, couleur: "#8B6F47" },
-  { id: 2, nom: "Crozets Sarrasin", variante: "Sarrasin", stock_kg: 320, seuil_critique_kg: 150, prix_vente_kg: 9.50, couleur: "#6B4C2A" },
-  { id: 3, nom: "Crozets aux Cèpes", variante: "Cèpes", stock_kg: 85, seuil_critique_kg: 100, prix_vente_kg: 12.00, couleur: "#7C6840" },
-  { id: 4, nom: "Crozets aux Noix", variante: "Noix", stock_kg: 145, seuil_critique_kg: 80, prix_vente_kg: 11.00, couleur: "#A0522D", allergene: true },
-  { id: 5, nom: "Crozets Noisettes", variante: "Noisettes", stock_kg: 110, seuil_critique_kg: 70, prix_vente_kg: 11.50, couleur: "#CD853F", allergene: true },
-  { id: 6, nom: "Crozets au Beaufort", variante: "Beaufort", stock_kg: 260, seuil_critique_kg: 120, prix_vente_kg: 13.50, couleur: "#DAA520" },
+  { id: 1,  nom: "Crozets Nature",          variante: "Nature",         stock_kg: 22000, seuil_critique_kg: 5000, prix_vente_kg: 8.50,  couleur: "#8B6F47" },
+  { id: 2,  nom: "Crozets Sarrasin",        variante: "Sarrasin",       stock_kg: 12000, seuil_critique_kg: 3000, prix_vente_kg: 9.50,  couleur: "#6B4C2A" },
+  { id: 3,  nom: "Crozets Méli-Mélo",       variante: "Méli-Mélo",      stock_kg: 8000,  seuil_critique_kg: 2000, prix_vente_kg: 10.00, couleur: "#C47D3B" },
+  { id: 4,  nom: "Crozets Noisette",        variante: "Noisette",       stock_kg: 8000,  seuil_critique_kg: 2000, prix_vente_kg: 11.50, couleur: "#CD853F", allergene: true },
+  { id: 5,  nom: "Crozets Noix",            variante: "Noix",           stock_kg: 8000,  seuil_critique_kg: 2000, prix_vente_kg: 11.00, couleur: "#A0522D", allergene: true },
+  { id: 6,  nom: "Crozets Chanterelles",    variante: "Chanterelles",   stock_kg: 4000,  seuil_critique_kg: 1000, prix_vente_kg: 13.00, couleur: "#E8A830" },
+  { id: 7,  nom: "Crozets Cèpes",           variante: "Cèpes",          stock_kg: 4000,  seuil_critique_kg: 1000, prix_vente_kg: 12.00, couleur: "#7C6840" },
+  { id: 8,  nom: "Crozets Nature Bio",      variante: "Nature Bio",     stock_kg: 4000,  seuil_critique_kg: 1000, prix_vente_kg: 10.50, couleur: "#6A9B5E" },
+  { id: 9,  nom: "Crozets Sarrasin Bio",    variante: "Sarrasin Bio",   stock_kg: 2000,  seuil_critique_kg: 500,  prix_vente_kg: 11.50, couleur: "#4A7A3A" },
+  { id: 10, nom: "Crozets Méli-Mélo Bio",   variante: "Méli-Mélo Bio",  stock_kg: 2000,  seuil_critique_kg: 500,  prix_vente_kg: 12.00, couleur: "#5C8F4E" },
+  { id: 11, nom: "Crozets Châtaigne Bio",   variante: "Châtaigne Bio",  stock_kg: 2000,  seuil_critique_kg: 500,  prix_vente_kg: 12.50, couleur: "#8B4513" },
+  { id: 12, nom: "Crozets Ail des Ours Bio",variante: "Ail Ours Bio",   stock_kg: 4000,  seuil_critique_kg: 1000, prix_vente_kg: 13.00, couleur: "#3D7A40" },
 ];
 
 // --- EMBALLAGES ---
@@ -150,13 +168,13 @@ export const clients = [
 
 // --- COMMANDES ---
 export const commandes = [
-  { id: "CMD-2026-0142", client_id: 3, client_nom: "Station Courchevel", date: "2026-03-12", produits: [{ variante: "Nature", qte_kg: 50 }, { variante: "Beaufort", qte_kg: 30 }], format: "5kg", statut: "en_preparation", transporteur: "interne", montant: 830 },
+  { id: "CMD-2026-0142", client_id: 3, client_nom: "Station Courchevel", date: "2026-03-12", produits: [{ variante: "Nature", qte_kg: 50 }, { variante: "Méli-Mélo", qte_kg: 30 }], format: "5kg", statut: "en_preparation", transporteur: "interne", montant: 830 },
   { id: "CMD-2026-0141", client_id: 1, client_nom: "Le Chalet Blanc", date: "2026-03-11", produits: [{ variante: "Nature", qte_kg: 8 }, { variante: "Sarrasin", qte_kg: 8 }, { variante: "Cèpes", qte_kg: 4 }], format: "400g", statut: "expediee", transporteur: "TFE", montant: 198 },
-  { id: "CMD-2026-0140", client_id: 5, client_nom: "Hôtel Alp'Azur", date: "2026-03-10", produits: [{ variante: "Beaufort", qte_kg: 40 }, { variante: "Nature", qte_kg: 25 }], format: "5kg", statut: "livree", transporteur: "interne", montant: 752.5 },
+  { id: "CMD-2026-0140", client_id: 5, client_nom: "Hôtel Alp'Azur", date: "2026-03-10", produits: [{ variante: "Chanterelles", qte_kg: 40 }, { variante: "Nature", qte_kg: 25 }], format: "5kg", statut: "livree", transporteur: "interne", montant: 752.5 },
   { id: "CMD-2026-0139", client_id: 8, client_nom: "Val Thorens Restauration", date: "2026-03-10", produits: [{ variante: "Nature", qte_kg: 80 }, { variante: "Sarrasin", qte_kg: 40 }], format: "5kg", statut: "en_preparation", transporteur: "TFE", montant: 1060 },
-  { id: "CMD-2026-0138", client_id: 7, client_nom: "Épicerie des Cimes", date: "2026-03-09", produits: [{ variante: "Noix", qte_kg: 6 }, { variante: "Noisettes", qte_kg: 6 }], format: "400g", statut: "expediee", transporteur: "interne", montant: 135 },
+  { id: "CMD-2026-0138", client_id: 7, client_nom: "Épicerie des Cimes", date: "2026-03-09", produits: [{ variante: "Noix", qte_kg: 6 }, { variante: "Noisette", qte_kg: 6 }], format: "400g", statut: "expediee", transporteur: "interne", montant: 135 },
   { id: "CMD-2026-0137", client_id: 2, client_nom: "Grand Bornand Palace", date: "2026-03-08", produits: [{ variante: "Nature", qte_kg: 30 }, { variante: "Cèpes", qte_kg: 15 }], format: "5kg", statut: "livree", transporteur: "interne", montant: 435 },
-  { id: "CMD-2026-0136", client_id: 4, client_nom: "La Maison Savoyarde", date: "2026-03-07", produits: [{ variante: "Nature", qte_kg: 10 }, { variante: "Beaufort", qte_kg: 5 }], format: "400g", statut: "livree", transporteur: "TFE", montant: 152.5 },
+  { id: "CMD-2026-0136", client_id: 4, client_nom: "La Maison Savoyarde", date: "2026-03-07", produits: [{ variante: "Nature", qte_kg: 10 }, { variante: "Châtaigne Bio", qte_kg: 5 }], format: "400g", statut: "livree", transporteur: "TFE", montant: 152.5 },
   { id: "CMD-2026-0135", client_id: 6, client_nom: "L'Alpage Doré", date: "2026-03-06", produits: [{ variante: "Sarrasin", qte_kg: 20 }, { variante: "Noix", qte_kg: 10 }], format: "5kg", statut: "livree", transporteur: "interne", montant: 300 },
 ];
 
@@ -193,7 +211,7 @@ export const productionMensuelle = generateProductionMensuelle();
 export const planningProduction = [
   { jour: "Lundi", date: "2026-03-09", parfum: "Nature", objectif_kg: 180, statut: "termine", couleur: "#8B6F47" },
   { jour: "Mardi", date: "2026-03-10", parfum: "Sarrasin", objectif_kg: 150, statut: "termine", couleur: "#6B4C2A" },
-  { jour: "Mercredi", date: "2026-03-11", parfum: "Beaufort", objectif_kg: 120, statut: "termine", couleur: "#DAA520" },
+  { jour: "Mercredi", date: "2026-03-11", parfum: "Méli-Mélo", objectif_kg: 120, statut: "termine", couleur: "#C47D3B" },
   { jour: "Jeudi", date: "2026-03-12", parfum: "Cèpes", objectif_kg: 100, statut: "en_cours", couleur: "#7C6840" },
   { jour: "Vendredi", date: "2026-03-13", parfum: "Nature", objectif_kg: 180, statut: "planifie", couleur: "#8B6F47" },
 ];

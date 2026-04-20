@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devis N°2026-0421 — ERP Maison Rullier Hub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --bleu: #1B2A4A;
+      --or: #B8860B;
+      --or-light: #DAA520;
+      --gris: #64748B;
+      --gris-clair: #F1F5F9;
+      --border: #E2E8F0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #1e293b;
+      font-size: 11px;
+      line-height: 1.5;
+      background: #f8fafc;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: white;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media screen {
+      .page {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        margin: 20px auto;
+        border-radius: 4px;
+      }
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, var(--bleu) 0%, #243B5C 60%, #2D4A6F 100%);
+      color: white;
+      padding: 32px 40px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(184, 134, 11, 0.08);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: 80px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(184, 134, 11, 0.05);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--or) 0%, var(--or-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .brand p {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+
+    .devis-ref {
+      text-align: right;
+    }
+
+    .devis-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--or-light);
+      font-weight: 600;
+    }
+
+    .devis-number {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-top: 2px;
+    }
+
+    .devis-date {
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+
+    /* ===== ACCENT BAR ===== */
+    .accent-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--or), var(--or-light), var(--or));
+    }
+
+    /* ===== PARTIES ===== */
+    .parties {
+      display: flex;
+      gap: 40px;
+      padding: 24px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .partie {
+      flex: 1;
+    }
+
+    .partie-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gris);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .partie-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--bleu);
+    }
+
+    .partie-detail {
+      font-size: 10px;
+      color: var(--gris);
+      margin-top: 2px;
+      line-height: 1.6;
+    }
+
+    /* ===== INTRO ===== */
+    .intro {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .intro h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--bleu);
+      margin-bottom: 6px;
+    }
+
+    .intro p {
+      font-size: 10.5px;
+      color: var(--gris);
+      line-height: 1.7;
+    }
+
+    /* ===== TABLE ===== */
+    .table-section {
+      padding: 20px 40px 0;
+    }
+
+    .section-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--or);
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gris);
+      font-weight: 600;
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--bleu);
+      text-align: left;
+    }
+
+    thead th:last-child,
+    thead th:nth-child(3),
+    thead th:nth-child(4) {
+      text-align: right;
+    }
+
+    tbody td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+
+    tbody tr:hover { background: #fafbfc; }
+
+    .item-ref {
+      font-size: 8px;
+      color: var(--or);
+      font-weight: 600;
+      font-family: 'SF Mono', 'Menlo', monospace;
+    }
+
+    .item-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--bleu);
+    }
+
+    .item-desc {
+      font-size: 9.5px;
+      color: var(--gris);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    .item-qty, .item-unit, .item-total {
+      font-size: 11px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .item-total {
+      font-weight: 600;
+      color: var(--bleu);
+    }
+
+    .category-row td {
+      background: var(--gris-clair);
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--bleu);
+      padding: 6px 12px;
+      border-bottom: none;
+    }
+
+    /* ===== TOTAUX ===== */
+    .totaux {
+      padding: 16px 40px 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .totaux-box {
+      width: 260px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .totaux-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 16px;
+      font-size: 11px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .totaux-row:last-child { border-bottom: none; }
+
+    .totaux-row.total {
+      background: linear-gradient(135deg, var(--bleu), #243B5C);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 16px;
+    }
+
+    .totaux-row .label { color: var(--gris); }
+    .totaux-row .value { font-weight: 600; color: var(--bleu); }
+    .totaux-row.total .label { color: rgba(255,255,255,0.7); }
+    .totaux-row.total .value { color: white; }
+
+    /* ===== CONDITIONS ===== */
+    .conditions {
+      padding: 20px 40px;
+      margin-top: 10px;
+    }
+
+    .conditions h3 {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--or);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .condition-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .condition-bullet {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--or);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .condition-item p {
+      font-size: 9.5px;
+      color: var(--gris);
+      line-height: 1.5;
+    }
+
+    .condition-item strong {
+      color: var(--bleu);
+      font-weight: 600;
+    }
+
+    /* ===== PLANNING ===== */
+    .planning {
+      padding: 0 40px;
+      margin-top: 16px;
+    }
+
+    .planning h3 {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--or);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .timeline {
+      display: flex;
+      gap: 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .phase {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .phase-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--or);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--or);
+      margin: 0 auto 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phase-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--bleu);
+    }
+
+    .phase-duration {
+      font-size: 8px;
+      color: var(--gris);
+      margin-top: 1px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p {
+      font-size: 8px;
+      color: #94a3b8;
+    }
+
+    .signature-zone {
+      margin-top: 14px;
+      padding: 0 40px 80px;
+    }
+
+    .signature-zone h3 {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--or);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .signature-boxes {
+      display: flex;
+      gap: 40px;
+    }
+
+    .sig-box {
+      flex: 1;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-height: 70px;
+    }
+
+    .sig-box p {
+      font-size: 9px;
+      color: var(--gris);
+    }
+
+    .sig-box .sig-label {
+      font-weight: 600;
+      color: var(--bleu);
+      font-size: 9px;
+      margin-bottom: 4px;
+    }
+
+    .mention-bon {
+      font-size: 8.5px;
+      color: var(--gris);
+      font-style: italic;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">⛰</div>
+        <div>
+          <h1>Maison Rullier</h1>
+          <p>Hub ERP — Solution Métier</p>
+        </div>
+      </div>
+      <div class="devis-ref">
+        <div class="devis-label">Devis</div>
+        <div class="devis-number">N°2026-0421</div>
+        <div class="devis-date">Émis le 20 avril 2026 · Valide 30 jours</div>
+      </div>
+    </div>
+  </div>
+  <div class="accent-bar"></div>
+
+  <!-- PARTIES -->
+  <div class="parties">
+    <div class="partie">
+      <div class="partie-label">Prestataire</div>
+      <div class="partie-name">YP Digital Solutions</div>
+      <div class="partie-detail">
+        Yann Perez — Ingénieur en informatique<br>
+        SIRET : 000 000 000 00000<br>
+        yann.perez@email.fr · 06 00 00 00 00
+      </div>
+    </div>
+    <div class="partie">
+      <div class="partie-label">Client</div>
+      <div class="partie-name">Maison Rullier — Crozets Artisanaux</div>
+      <div class="partie-detail">
+        Fabricant de pâtes artisanales depuis 1935<br>
+        Savoie, Auvergne-Rhône-Alpes<br>
+        contact@maison-rullier.fr
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <h2>ERP sur mesure — Gestion intégrée PME Agroalimentaire</h2>
+    <p>
+      Conception, développement et déploiement d'une application web ERP sur mesure pour la gestion
+      complète de l'activité : suivi de production, gestion des stocks et matières premières, pilotage
+      commercial et CRM, tableau de bord de direction avec KPIs temps réel. Solution responsive,
+      hébergée et maintenable, conçue pour les besoins spécifiques de l'industrie artisanale savoyarde.
+    </p>
+  </div>
+
+  <!-- TABLEAU DES PRESTATIONS -->
+  <div class="table-section">
+    <div class="section-title">Détail des prestations</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50px;">Réf.</th>
+          <th>Désignation</th>
+          <th style="width: 50px;">Qté</th>
+          <th style="width: 80px;">PU HT</th>
+          <th style="width: 80px;">Total HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Conception -->
+        <tr class="category-row"><td colspan="5">🏗 Conception & Architecture</td></tr>
+        <tr>
+          <td><span class="item-ref">C-01</span></td>
+          <td>
+            <div class="item-name">Audit métier & Cahier des charges</div>
+            <div class="item-desc">Analyse des flux de production, stock, commercial. Rédaction des spécifications fonctionnelles et techniques.</div>
+          </td>
+          <td class="item-qty">3 j</td>
+          <td class="item-unit">550 €</td>
+          <td class="item-total">1 650 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">C-02</span></td>
+          <td>
+            <div class="item-name">Design UX/UI & Maquettes interactives</div>
+            <div class="item-desc">Wireframes, prototypes Figma, design system premium (palette Savoie, typographies, composants).</div>
+          </td>
+          <td class="item-qty">4 j</td>
+          <td class="item-unit">550 €</td>
+          <td class="item-total">2 200 €</td>
+        </tr>
+
+        <!-- Dev Core -->
+        <tr class="category-row"><td colspan="5">⚙️ Développement — Modules Core</td></tr>
+        <tr>
+          <td><span class="item-ref">D-01</span></td>
+          <td>
+            <div class="item-name">Module Dashboard & KPI Direction</div>
+            <div class="item-desc">Tableau de bord exécutif : CA, tonnage, alertes stock, saisonnalité, répartition CA. Graphiques interactifs et vue Express.</div>
+          </td>
+          <td class="item-qty">4 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">2 400 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">D-02</span></td>
+          <td>
+            <div class="item-name">Module Entrepôt — Stocks & Matières Premières</div>
+            <div class="item-desc">Suivi MP avec seuils critiques, alertes allergènes, gestion emballages, barres de progression et statuts temps réel.</div>
+          </td>
+          <td class="item-qty">5 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">3 000 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">D-03</span></td>
+          <td>
+            <div class="item-name">Module Commercial & CRM</div>
+            <div class="item-desc">Gestion commandes, suivi expéditions, fiches Grands Comptes, filtrage/recherche, saisie adaptée au format client.</div>
+          </td>
+          <td class="item-qty">5 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">3 000 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">D-04</span></td>
+          <td>
+            <div class="item-name">Module Production — Planning & OF</div>
+            <div class="item-desc">Planning bento-grid, calendrier hebdo, déclencheurs d'ordres de fabrication, suivi progression journalière.</div>
+          </td>
+          <td class="item-qty">4 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">2 400 €</td>
+        </tr>
+
+        <!-- Fonctionnalités transverses -->
+        <tr class="category-row"><td colspan="5">🔧 Fonctionnalités transverses</td></tr>
+        <tr>
+          <td><span class="item-ref">T-01</span></td>
+          <td>
+            <div class="item-name">Data Manager — Gestion des données en temps réel</div>
+            <div class="item-desc">Panneau d'administration CRUD complet, persistence localStorage, reset démo, calculs automatiques KPI.</div>
+          </td>
+          <td class="item-qty">3 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">1 800 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">T-02</span></td>
+          <td>
+            <div class="item-name">Système de vues (Détaillée / Express)</div>
+            <div class="item-desc">Toggle de complexité global : vue détaillée complète et vue express optimisée pour rapidité d'exécution.</div>
+          </td>
+          <td class="item-qty">2 j</td>
+          <td class="item-unit">600 €</td>
+          <td class="item-total">1 200 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">T-03</span></td>
+          <td>
+            <div class="item-name">Interface responsive & Animations</div>
+            <div class="item-desc">Sidebar rétractable, transitions fluides (Framer Motion), micro-animations, design glassmorphism premium.</div>
+          </td>
+          <td class="item-qty">2 j</td>
+          <td class="item-unit">550 €</td>
+          <td class="item-total">1 100 €</td>
+        </tr>
+
+        <!-- Déploiement -->
+        <tr class="category-row"><td colspan="5">🚀 Déploiement & Accompagnement</td></tr>
+        <tr>
+          <td><span class="item-ref">R-01</span></td>
+          <td>
+            <div class="item-name">Déploiement, hébergement & mise en production</div>
+            <div class="item-desc">Configuration serveur, nom de domaine, certificat SSL, optimisation performances, CI/CD.</div>
+          </td>
+          <td class="item-qty">2 j</td>
+          <td class="item-unit">550 €</td>
+          <td class="item-total">1 100 €</td>
+        </tr>
+        <tr>
+          <td><span class="item-ref">R-02</span></td>
+          <td>
+            <div class="item-name">Formation utilisateurs & documentation</div>
+            <div class="item-desc">Session de formation sur site (1/2 journée), guide utilisateur PDF, documentation technique.</div>
+          </td>
+          <td class="item-qty">1 j</td>
+          <td class="item-unit">500 €</td>
+          <td class="item-total">500 €</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TOTAUX -->
+  <div class="totaux">
+    <div class="totaux-box">
+      <div class="totaux-row">
+        <span class="label">Total HT</span>
+        <span class="value">20 350 €</span>
+      </div>
+      <div class="totaux-row">
+        <span class="label">TVA (20%)</span>
+        <span class="value">4 070 €</span>
+      </div>
+      <div class="totaux-row total">
+        <span class="label">Total TTC</span>
+        <span class="value">24 420 €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANNING -->
+  <div class="planning">
+    <h3>Planning prévisionnel</h3>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-dot">1</div>
+        <div class="phase-label">Conception</div>
+        <div class="phase-duration">Sem. 1-2</div>
+      </div>
+      <div class="phase">
+        <div class="phase-dot">2</div>
+        <div class="phase-label">Développement</div>
+        <div class="phase-duration">Sem. 3-7</div>
+      </div>
+      <div class="phase">
+        <div class="phase-dot">3</div>
+        <div class="phase-label">Tests & Recette</div>
+        <div class="phase-duration">Sem. 8</div>
+      </div>
+      <div class="phase">
+        <div class="phase-dot">4</div>
+        <div class="phase-label">Déploiement</div>
+        <div class="phase-duration">Sem. 9</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONDITIONS -->
+  <div class="conditions">
+    <h3>Conditions</h3>
+    <div class="conditions-grid">
+      <div class="condition-item">
+        <div class="condition-bullet"></div>
+        <p><strong>Paiement :</strong> 30% à la signature, 40% à mi-parcours, 30% à la livraison.</p>
+      </div>
+      <div class="condition-item">
+        <div class="condition-bullet"></div>
+        <p><strong>Validité :</strong> Ce devis est valable 30 jours à compter de la date d'émission.</p>
+      </div>
+      <div class="condition-item">
+        <div class="condition-bullet"></div>
+        <p><strong>Garantie :</strong> 3 mois de maintenance corrective inclus après livraison.</p>
+      </div>
+      <div class="condition-item">
+        <div class="condition-bullet"></div>
+        <p><strong>Propriété :</strong> Le code source est livré intégralement au client à la réception finale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="signature-zone">
+    <h3>Acceptation</h3>
+    <div class="signature-boxes">
+      <div class="sig-box">
+        <p class="sig-label">Le prestataire</p>
+        <p>YP Digital Solutions<br>Date :</p>
+      </div>
+      <div class="sig-box">
+        <p class="sig-label">Le client</p>
+        <p>Maison Rullier<br>Date :<br><em style="font-size: 8px; color: #94a3b8;">Signature précédée de la mention « Bon pour accord »</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>YP Digital Solutions · SIRET 000 000 000 00000 · TVA non applicable, art. 293 B du CGI (si applicable)</p>
+    <p>Devis N°2026-0421 · Page 1/1</p>
+  </div>
+</div>
+
+</body>
+</html>
