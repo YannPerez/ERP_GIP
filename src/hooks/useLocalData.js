@@ -1,27 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import {
-  matierespremieres as defaultMP,
-  produitsFinis as defaultPF,
-  emballages as defaultEmb,
-  clients as defaultClients,
-  commandes as defaultCommandes,
-  productionMensuelle as defaultProdMens,
-  planningProduction as defaultPlanning,
-  kpiDirection as defaultKPI,
-  transporteurs as defaultTransporteurs,
-} from '../data';
+import { DEMO_DATA, EMPTY_DATA, KPI_BASE, generateProductionMensuelle } from '../data';
 
-const STORAGE_KEY = 'rullier-hub-data';
-
-const defaultData = {
-  matierespremieres: defaultMP,
-  produitsFinis: defaultPF,
-  emballages: defaultEmb,
-  clients: defaultClients,
-  commandes: defaultCommandes,
-  planningProduction: defaultPlanning,
-  transporteurs: defaultTransporteurs,
-};
+const STORAGE_KEY = 'rullier-hub-data-v2';
 
 function loadFromStorage() {
   try {
@@ -41,65 +21,55 @@ function saveToStorage(data) {
   }
 }
 
-function computeKPI(data) {
+function computeKPI(data, isDemo, productionMensuelle) {
   const { commandes, produitsFinis } = data;
 
-  const ca_annuel = commandes.reduce((a, c) => a + (c.montant || 0), 0);
-  const tonnage_annuel = data.productionMensuelle.reduce((a, m) => a + m.tonnage, 0);
+  const ca_annuel = productionMensuelle.reduce((a, m) => a + m.ca, 0);
+  const tonnage_annuel = productionMensuelle.reduce((a, m) => a + m.tonnage, 0);
   const commandes_en_cours = commandes.filter(c => c.statut !== 'livree').length;
-  const alertes_stock = produitsFinis.filter(p => p.stock_kg < p.seuil_critique_kg).length;
+  // Use a realistic target for alerts. If stock is < objectif_t * 1000 / 12 (1 month of stock)
+  const alertes_stock = produitsFinis.filter(p => p.stock_kg < (p.objectif_t * 1000 / 12)).length;
 
   return {
-    ca_annuel: ca_annuel || defaultKPI.ca_annuel,
-    ca_objectif: defaultKPI.ca_objectif,
+    ...KPI_BASE,
+    ca_annuel,
     tonnage_annuel: Math.round(tonnage_annuel * 10) / 10,
-    tonnage_objectif: defaultKPI.tonnage_objectif,
     commandes_en_cours,
     alertes_stock,
-    repartition_ca: defaultKPI.repartition_ca,
   };
 }
 
 export default function useLocalData() {
-  const [data, setData] = useState(() => {
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [localData, setLocalData] = useState(() => {
     const stored = loadFromStorage();
-    if (stored) {
-      delete stored.productionMensuelle; // never use cached version
-      return stored;
-    }
-    return { ...defaultData };
+    if (stored) return stored;
+    return { ...EMPTY_DATA };
   });
 
   useEffect(() => {
-    saveToStorage(data);
-  }, [data]);
+    saveToStorage(localData);
+  }, [localData]);
 
-  // productionMensuelle is always fresh (rolling 12 months from current date)
-  const dataWithProd = { ...data, productionMensuelle: defaultProdMens };
-  const kpiDirection = computeKPI(dataWithProd);
+  const activeData = isDemoMode ? DEMO_DATA : localData;
+  const productionMensuelle = generateProductionMensuelle(isDemoMode);
+  const kpiDirection = computeKPI(activeData, isDemoMode, productionMensuelle);
 
-  // --- Generic CRUD helpers ---
+  // --- Generic CRUD helpers (only affect localData) ---
   const updateCollection = useCallback((key, updater) => {
-    setData(prev => {
-      const updated = { ...prev, [key]: updater(prev[key]) };
-      return updated;
-    });
-  }, []);
+    if (isDemoMode) return; // Read-only in demo mode
+    setLocalData(prev => ({ ...prev, [key]: updater(prev[key]) }));
+  }, [isDemoMode]);
 
   const addItem = useCallback((key, item) => {
     updateCollection(key, (arr) => {
-      const maxId = arr.reduce((m, i) => {
-        const id = typeof i.id === 'number' ? i.id : 0;
-        return Math.max(m, id);
-      }, 0);
+      const maxId = arr.reduce((m, i) => Math.max(m, typeof i.id === 'number' ? i.id : 0), 0);
       return [...arr, { ...item, id: typeof arr[0]?.id === 'string' ? item.id : maxId + 1 }];
     });
   }, [updateCollection]);
 
   const updateItem = useCallback((key, id, updates) => {
-    updateCollection(key, (arr) =>
-      arr.map(item => (item.id === id ? { ...item, ...updates } : item))
-    );
+    updateCollection(key, (arr) => arr.map(item => (item.id === id ? { ...item, ...updates } : item)));
   }, [updateCollection]);
 
   const deleteItem = useCallback((key, id) => {
@@ -107,28 +77,28 @@ export default function useLocalData() {
   }, [updateCollection]);
 
   const resetToDefaults = useCallback(() => {
-    setData({ ...defaultData });
+    setLocalData({ ...EMPTY_DATA });
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
   return {
+    isDemoMode,
+    setIsDemoMode,
     // Collections
-    matierespremieres: data.matierespremieres,
-    produitsFinis: data.produitsFinis,
-    emballages: data.emballages,
-    clients: data.clients,
-    commandes: data.commandes,
-    productionMensuelle: defaultProdMens, // always fresh, never cached
-    planningProduction: data.planningProduction,
-    transporteurs: data.transporteurs,
+    matierespremieres: activeData.matierespremieres,
+    produitsFinis: activeData.produitsFinis,
+    emballages: activeData.emballages || [],
+    clients: activeData.clients || [],
+    commandes: activeData.commandes,
+    productionMensuelle,
+    planningProduction: activeData.planningProduction || [],
+    transporteurs: activeData.transporteurs || [],
     kpiDirection,
 
     // CRUD
     addItem,
     updateItem,
     deleteItem,
-
-    // Reset
     resetToDefaults,
   };
 }

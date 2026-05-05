@@ -7,6 +7,7 @@ import {
 import { useData } from '../context/DataContext';
 import { useViewMode } from '../context/ViewModeContext';
 import VariantBadge from '../components/VariantBadge';
+import { NOMENCLATURES } from '../data';
 
 const pageV = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0, transition: { duration: 0.4 } }, exit: { opacity: 0, y: -8 } };
 const fadeUp = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
@@ -71,7 +72,9 @@ function BentoCalendar() {
         </div>
         <div className="text-right">
           <p className="label">Capacite max</p>
-          <p className="text-xl font-light text-or-brosse mt-0.5">200 <span className="text-sm text-gris-ardoise">kg/jour</span></p>
+          <p className="text-xl font-light text-or-brosse mt-0.5">
+            {[10, 11, 0, 1].includes(new Date().getMonth()) ? '397' : '318'} <span className="text-sm text-gris-ardoise">kg/jour</span>
+          </p>
         </div>
       </div>
     </motion.div>
@@ -168,8 +171,9 @@ function BentoCell({ jour }) {
 /* ===== OF TRIGGERS ===== */
 function OFTriggers() {
   const { produitsFinis } = useData();
-  const critical = produitsFinis.filter(pf => pf.stock_kg <= pf.seuil_critique_kg);
-  const nearCritical = produitsFinis.filter(pf => pf.stock_kg > pf.seuil_critique_kg && pf.stock_kg <= pf.seuil_critique_kg * 1.5);
+  const getSeuil = (pf) => pf.seuil_critique_kg || Math.round((pf.objectif_t || 0) * 1000 / 12);
+  const critical = produitsFinis.filter(pf => pf.stock_kg <= getSeuil(pf));
+  const nearCritical = produitsFinis.filter(pf => pf.stock_kg > getSeuil(pf) && pf.stock_kg <= getSeuil(pf) * 1.5);
 
   return (
     <motion.div variants={fadeUp} className="card p-6">
@@ -186,8 +190,9 @@ function OFTriggers() {
           <p className="label text-rouge-alerte flex items-center gap-2 mb-3"><AlertTriangle className="w-3.5 h-3.5" /> Stock critique - OF requis</p>
           <div className="space-y-3">
             {critical.map(pf => {
-              const deficit = pf.seuil_critique_kg - pf.stock_kg;
-              const suggestedQty = Math.ceil((pf.seuil_critique_kg * 2 - pf.stock_kg) / 10) * 10;
+              const seuil = getSeuil(pf);
+              const deficit = seuil - pf.stock_kg;
+              const suggestedQty = Math.ceil(((seuil * 2) - pf.stock_kg) / 10) * 10;
               return (
                 <div key={pf.id} className="p-5 rounded-2xl border-2 border-rouge-alerte/20 bg-rouge-alerte/2">
                   <div className="flex items-center justify-between mb-3">
@@ -200,7 +205,7 @@ function OFTriggers() {
                       <p className="text-[10px] text-gris-ardoise uppercase tracking-wider mt-0.5">Stock actuel</p>
                     </div>
                     <div className="text-center p-3 rounded-xl bg-white/80 border border-gris-clair/30">
-                      <p className="text-2xl font-light text-orange-terreux">{pf.seuil_critique_kg}</p>
+                      <p className="text-2xl font-light text-orange-terreux">{pf.seuil_critique_kg || Math.round(pf.objectif_t * 1000 / 12)}</p>
                       <p className="text-[10px] text-gris-ardoise uppercase tracking-wider mt-0.5">Seuil critique</p>
                     </div>
                     <div className="text-center p-3 rounded-xl bg-white/80 border border-gris-clair/30">
@@ -208,6 +213,22 @@ function OFTriggers() {
                       <p className="text-[10px] text-gris-ardoise uppercase tracking-wider mt-0.5">Qte suggeree</p>
                     </div>
                   </div>
+                  
+                  {/* Nomenclature/Recipe display */}
+                  {NOMENCLATURES[pf.variante] && (
+                    <div className="mb-4 p-3 rounded-xl bg-gris-fond border border-gris-clair/50">
+                      <p className="text-[10px] uppercase font-semibold text-gris-ardoise mb-2">Besoins Matières Premières (Pour {suggestedQty} kg)</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {Object.entries(NOMENCLATURES[pf.variante]).map(([ing, ratio]) => (
+                          <div key={ing} className="flex justify-between text-xs">
+                            <span className="text-bleu-profond">{ing}</span>
+                            <span className="font-medium text-gris-ardoise">{Math.round(suggestedQty * ratio)} kg</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className="btn-primary btn-primary-lg w-full">
                     <Factory className="w-5 h-5" /> Lancer l'OF - {suggestedQty} kg de {pf.variante}
                     <ArrowRight className="w-4 h-4 ml-auto" />
@@ -229,7 +250,7 @@ function OFTriggers() {
                 <div className="flex items-center gap-3">
                   <div className="text-right">
                     <span className="text-[13px] font-semibold text-orange-terreux">{pf.stock_kg} kg</span>
-                    <span className="text-[11px] text-gris-ardoise ml-1">/ {pf.seuil_critique_kg}</span>
+                    <span className="text-[11px] text-gris-ardoise ml-1">/ {getSeuil(pf)}</span>
                   </div>
                   <button className="btn-secondary text-[11px] !py-1.5 !px-3">Planifier OF</button>
                 </div>
@@ -253,7 +274,8 @@ function OFTriggers() {
 /* ===== STOCK CRITIQUE BANNER ===== */
 function StockCritiqueBanner() {
   const { produitsFinis } = useData();
-  const criticals = produitsFinis.filter(pf => pf.stock_kg <= pf.seuil_critique_kg);
+  const getSeuil = (pf) => pf.seuil_critique_kg || Math.round((pf.objectif_t || 0) * 1000 / 12);
+  const criticals = produitsFinis.filter(pf => pf.stock_kg <= getSeuil(pf));
   if (criticals.length === 0) return null;
 
   return (
@@ -277,7 +299,8 @@ export default function Production() {
 
   const totalWeek = planningProduction.reduce((a, j) => a + j.objectif_kg, 0);
   const done = planningProduction.filter(j => j.statut === 'termine').length;
-  const critical = produitsFinis.filter(p => p.stock_kg <= p.seuil_critique_kg).length;
+  const getSeuil = (pf) => pf.seuil_critique_kg || Math.round((pf.objectif_t || 0) * 1000 / 12);
+  const critical = produitsFinis.filter(p => p.stock_kg <= getSeuil(p)).length;
 
   return (
     <motion.div variants={pageV} initial="initial" animate="animate" exit="exit">

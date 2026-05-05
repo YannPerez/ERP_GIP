@@ -19,8 +19,8 @@ const statutLabels = {
   livree: { label: 'Livree', badge: 'badge-success', icon: CheckCircle2 },
 };
 
-const typeIcons = { epicerie_fine: Building2, hotel_prestige: Hotel, station_ski: Mountain, restauration: UtensilsCrossed };
-const typeLabels = { epicerie_fine: 'Epicerie Fine', hotel_prestige: 'Hotel de Prestige', station_ski: 'Station de Ski', restauration: 'Restauration' };
+const typeIcons = { epicerie_fine: Building2, hotel_prestige: Hotel, restaurant_altitude: Mountain, restaurant_hotel: Hotel, restauration: UtensilsCrossed };
+const typeLabels = { epicerie_fine: 'Epicerie Fine', hotel_prestige: 'Hôtel de Prestige', restaurant_altitude: 'Restaurant d\'Altitude', restaurant_hotel: 'Restaurant d\'Hôtel', restauration: 'Restauration' };
 
 function CommandesTable({ compact }) {
   const { commandes, produitsFinis, transporteurs } = useData();
