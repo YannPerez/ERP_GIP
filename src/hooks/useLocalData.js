@@ -69,7 +69,9 @@ export default function useLocalData() {
   }, [updateCollection]);
 
   const updateItem = useCallback((key, id, updates) => {
-    updateCollection(key, (arr) => arr.map(item => (item.id === id ? { ...item, ...updates } : item)));
+    updateCollection(key, (arr) =>
+      arr.map(item => (item.id === id || item.jour === id ? { ...item, ...updates } : item))
+    );
   }, [updateCollection]);
 
   const deleteItem = useCallback((key, id) => {

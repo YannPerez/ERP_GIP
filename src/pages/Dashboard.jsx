@@ -43,12 +43,12 @@ function KPIExecutiveSummary({ compact }) {
     return (
       <motion.div variants={fadeUp} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="card p-5 text-center card-interactive">
-          <p className="label mb-2">Chiffre d'affaires</p>
+          <p className="label mb-2 flex items-center justify-center gap-2">Chiffre d'affaires <span className="badge badge-neutral text-[9px]">2026</span></p>
           <p className="text-3xl font-light text-bleu-profond">{(kpiDirection.ca_annuel / 1000).toFixed(0)}<span className="text-lg text-gris-ardoise ml-0.5">k&euro;</span></p>
           <div className="progress-bar mt-3"><div className="progress-bar-fill bg-gradient-to-r from-or-brosse to-or-clair" style={{ width: `${caPct}%` }} /></div>
         </div>
         <div className="card p-5 text-center card-interactive">
-          <p className="label mb-2">Tonnage</p>
+          <p className="label mb-2 flex items-center justify-center gap-2">Tonnage <span className="badge badge-neutral text-[9px]">2026</span></p>
           <p className="text-3xl font-light text-bleu-profond">{kpiDirection.tonnage_annuel}<span className="text-lg text-gris-ardoise ml-0.5">t</span></p>
           <p className="text-[10px] text-gris-ardoise mt-1">/ {kpiDirection.tonnage_objectif}t ({tonnagePct.toFixed(0)}%)</p>
         </div>
@@ -81,7 +81,10 @@ function KPIExecutiveSummary({ compact }) {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
           {/* CA */}
           <div className="space-y-2">
-            <p className="label">Chiffre d'affaires</p>
+            <div className="flex items-center gap-2">
+              <p className="label">Chiffre d'affaires</p>
+              <span className="badge badge-neutral text-[9px]">2026</span>
+            </div>
             <p className="text-3xl font-light text-bleu-profond tracking-tight">
               {(kpiDirection.ca_annuel / 1000).toFixed(0)}<span className="text-lg text-gris-ardoise ml-0.5">k&euro;</span>
             </p>
@@ -93,7 +96,10 @@ function KPIExecutiveSummary({ compact }) {
 
           {/* Tonnage - circular gauge */}
           <div className="space-y-2">
-            <p className="label">Tonnage annuel</p>
+            <div className="flex items-center gap-2">
+              <p className="label">Tonnage annuel</p>
+              <span className="badge badge-neutral text-[9px]">2026</span>
+            </div>
             <div className="flex items-center gap-3">
               <div className="relative w-16 h-16">
                 <svg className="w-16 h-16 -rotate-90" viewBox="0 0 80 80">
@@ -244,8 +250,8 @@ export default function Dashboard() {
                 <YAxis yAxisId="left" tick={{ fontSize: 11, fill: '#64748B' }} axisLine={false} tickLine={false} unit="t" />
                 <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: '#64748B' }} axisLine={false} tickLine={false} unit="€" />
                 <Tooltip content={<CustomTooltip />} />
-                <Area yAxisId="left" type="monotone" dataKey="tonnage" stroke="#B8860B" strokeWidth={2} fill="url(#gTonnage)" />
-                <Area yAxisId="right" type="monotone" dataKey="ca" stroke="#1B2A4A" strokeWidth={1.5} strokeDasharray="5 5" fill="url(#gCA)" />
+                <Area yAxisId="left" type="step" dataKey="tonnage" stroke="#B8860B" strokeWidth={2} fill="url(#gTonnage)" />
+                <Area yAxisId="right" type="step" dataKey="ca" stroke="#1B2A4A" strokeWidth={1.5} strokeDasharray="5 5" fill="url(#gCA)" />
               </AreaChart>
             </ResponsiveContainer>
           </motion.div>
