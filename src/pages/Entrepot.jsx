@@ -1,116 +1,209 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  Wheat, Egg, AlertTriangle, ShieldAlert, Package, Box, ChevronDown, ChevronUp,
-  CheckCircle2, AlertCircle, Info
-} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Package, Wheat, Settings, Leaf, ShieldAlert, AlertCircle, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { useData } from '../context/DataContext';
-import { useViewMode } from '../context/ViewModeContext';
-import VariantBadge from '../components/VariantBadge';
 
 const pageV = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0, transition: { duration: 0.4 } }, exit: { opacity: 0, y: -8 } };
-const fadeUp = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
-const stagger = { animate: { transition: { staggerChildren: 0.06 } } };
+const fadeUp = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 
-function StockBar({ current, max, critical }) {
-  const pct = Math.min((current / max) * 100, 100);
-  const isLow = current <= critical;
-  const isCrit = current <= critical * 0.7;
+function BackButton({ onBack, label }) {
   return (
-    <div className="w-full">
-      <div className="flex justify-between text-[11px] mb-1">
-        <span className={`font-semibold ${isCrit ? 'text-rouge-alerte' : isLow ? 'text-orange-terreux' : 'text-bleu-profond'}`}>{current} kg</span>
-        <span className="text-gris-ardoise">Securite : {critical} kg</span>
-      </div>
-      <div className="progress-bar relative">
-        <div className="progress-bar-fill" style={{ width: `${pct}%`, background: isCrit ? '#DC3545' : isLow ? '#C2703E' : '#6B8F71' }} />
-        <div className="absolute top-0 bottom-0 w-px bg-rouge-alerte/40" style={{ left: `${(critical / max) * 100}%` }} />
-      </div>
-    </div>
+    <button
+      onClick={onBack}
+      className="flex items-center gap-2 px-5 py-2.5 mb-6 rounded-xl border border-gris-clair bg-white text-bleu-profond font-semibold text-sm hover:bg-gris-fond hover:border-bleu-profond/25 transition-all shadow-sm w-fit"
+    >
+      <ChevronLeft className="w-5 h-5" />
+      {label || 'Retour'}
+    </button>
   );
 }
 
-function AllergeneAlert() {
-  const { matierespremieres } = useData();
-  const allergenes = matierespremieres.filter(m => m.allergene);
-  if (allergenes.length === 0) return null;
+/* ===== HOME : 2 gros boutons ===== */
+function EntrepotHome({ onNavigate }) {
   return (
-    <motion.div variants={fadeUp} className="card p-5 border-l-4 border-rouge-alerte overflow-hidden relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-rouge-alerte/3 to-transparent pointer-events-none" />
-      <div className="relative flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-rouge-alerte-light flex items-center justify-center flex-shrink-0">
-          <ShieldAlert className="w-4.5 h-4.5 text-rouge-alerte" />
-        </div>
-        <div className="flex-1">
-          <h4 className="text-xs font-bold text-rouge-alerte uppercase tracking-wider">Zone Allergenes - Stockage Separe</h4>
-          <p className="text-[11px] text-gris-ardoise mt-1 mb-3">Isolement obligatoire des variantes contenant des fruits a coque.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {allergenes.map(mp => (
-              <div key={mp.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-rouge-alerte/4 border border-rouge-alerte/10">
-                <AlertTriangle className="w-3.5 h-3.5 text-orange-terreux flex-shrink-0" />
-                <div>
-                  <p className="text-[13px] font-medium text-bleu-profond">{mp.nom}</p>
-                  <p className="text-[10px] text-rouge-alerte font-semibold">{mp.type_allergene}</p>
+    <motion.div variants={fadeUp} initial="initial" animate="animate" className="flex flex-col items-center justify-center gap-8 h-full py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-2xl mx-auto">
+        <button
+          onClick={() => onNavigate('pf')}
+          className="group flex flex-col items-center justify-center gap-7 py-20 px-10 rounded-3xl border-2 border-or-brosse/20 bg-gradient-to-br from-or-brosse/5 to-or-brosse/10 hover:from-or-brosse/10 hover:to-or-brosse/18 hover:border-or-brosse/45 transition-all"
+        >
+          <div className="w-28 h-28 rounded-2xl bg-or-brosse/15 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
+            <Package className="w-14 h-14 text-or-brosse" />
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-bleu-profond">Produits Finis</p>
+            <p className="text-sm text-gris-ardoise mt-1.5">12 variétés de crozets</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => onNavigate('mp')}
+          className="group flex flex-col items-center justify-center gap-7 py-20 px-10 rounded-3xl border-2 border-vert-sauge/20 bg-gradient-to-br from-vert-sauge/5 to-vert-sauge/10 hover:from-vert-sauge/10 hover:to-vert-sauge/18 hover:border-vert-sauge/45 transition-all"
+        >
+          <div className="w-28 h-28 rounded-2xl bg-vert-sauge/15 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
+            <Wheat className="w-14 h-14 text-vert-sauge" />
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-bleu-profond">Matières Premières</p>
+            <p className="text-sm text-gris-ardoise mt-1.5">11 ingrédients</p>
+          </div>
+        </button>
+      </div>
+
+      <button
+        onClick={() => onNavigate('reglages')}
+        className="flex items-center gap-2 px-8 py-3 rounded-xl border border-gris-clair/70 text-gris-ardoise hover:text-bleu-profond hover:border-bleu-profond/25 hover:bg-gris-fond/60 transition-all text-sm font-medium"
+      >
+        <Settings className="w-4 h-4" />
+        Réglages
+      </button>
+    </motion.div>
+  );
+}
+
+/* ===== PRODUITS FINIS ===== */
+function TabProduitsFinis({ onBack }) {
+  const { produitsFinis } = useData();
+
+  return (
+    <motion.div variants={fadeUp} initial="initial" animate="animate">
+      <BackButton onBack={onBack} label="Entrepôt" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {produitsFinis.map(pf => {
+          const pct = Math.min((pf.quantite_kg / (pf.seuil_kg * 3)) * 100, 100);
+          const isCrit = pf.quantite_kg <= pf.seuil_kg;
+          const barColor = pct < 30 ? '#DC3545' : pct < 70 ? '#F59E0B' : pf.couleur;
+
+          return (
+            <div
+              key={pf.id}
+              className={`rounded-xl border overflow-hidden bg-white hover:shadow-sm transition-all ${
+                isCrit ? 'border-rouge-alerte/30' : 'border-gris-clair/50'
+              }`}
+            >
+              {/* Bande colorée en haut */}
+              <div className="h-2" style={{ backgroundColor: pf.couleur }} />
+
+              {/* Bandeau BIO pleine largeur */}
+              {pf.bio && (
+                <div className="flex items-center justify-center gap-2.5 py-3 bg-vert-sauge/12 border-b border-vert-sauge/20">
+                  <Leaf className="w-5 h-5 text-vert-sauge" />
+                  <span className="text-base font-bold text-vert-sauge uppercase tracking-widest">Agriculture Biologique</span>
+                </div>
+              )}
+
+              <div className="p-4">
+                {/* En-tête : pastille + nom + badge allergène */}
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div
+                    className="w-7 h-7 rounded-full flex-shrink-0 shadow-sm border-2 border-white ring-1 ring-black/8"
+                    style={{ backgroundColor: pf.couleur }}
+                  />
+                  <h4 className="font-semibold text-bleu-profond text-[13px] flex-1 leading-tight">{pf.nom}</h4>
+                  {pf.allergene && (
+                    <span className="flex items-center gap-1 text-[9px] font-bold text-rouge-alerte bg-rouge-alerte/10 px-1.5 py-0.5 rounded-sm uppercase tracking-wider flex-shrink-0">
+                      <ShieldAlert className="w-2.5 h-2.5" /> Allergène
+                    </span>
+                  )}
+                </div>
+
+                {/* Quantité */}
+                <p className={`text-2xl font-light mb-1 ${isCrit ? 'text-rouge-alerte' : 'text-bleu-profond'}`}>
+                  {pf.quantite_kg.toLocaleString('fr-FR')}{' '}
+                  <span className="text-sm text-gris-ardoise">kg</span>
+                </p>
+                <p className="text-[11px] text-gris-ardoise mb-3">
+                  Seuil : {pf.seuil_kg.toLocaleString('fr-FR')} kg
+                </p>
+
+                {/* Barre de progression */}
+                <div className="progress-bar">
+                  <div
+                    className="progress-bar-fill"
+                    style={{ width: `${pct}%`, backgroundColor: barColor }}
+                  />
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </div>
     </motion.div>
   );
 }
 
-function MPSection({ compact }) {
+/* ===== MATIÈRES PREMIÈRES ===== */
+function TabMatieresPremieres({ onBack }) {
   const { matierespremieres } = useData();
-  const [open, setOpen] = useState(true);
-  const getIcon = (cat) => cat === 'Farine' ? <Wheat className="w-4 h-4" /> : cat === 'Oeufs' ? <Egg className="w-4 h-4" /> : <Package className="w-4 h-4" />;
 
   return (
-    <motion.div variants={fadeUp} className="card p-6">
-      <button onClick={() => setOpen(!open)} className="flex items-center justify-between w-full mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-or-brosse/8 flex items-center justify-center"><Wheat className="w-4.5 h-4.5 text-or-brosse" /></div>
-          <div className="text-left">
-            <h3 className="text-[15px] font-semibold text-bleu-profond">Matieres Premieres</h3>
-            <p className="text-[11px] text-gris-ardoise">{matierespremieres.length} references</p>
-          </div>
-        </div>
-        {open ? <ChevronUp className="w-4 h-4 text-gris-ardoise" /> : <ChevronDown className="w-4 h-4 text-gris-ardoise" />}
-      </button>
-      {open && (
+    <motion.div variants={fadeUp} initial="initial" animate="animate">
+      <BackButton onBack={onBack} label="Entrepôt" />
+      <div className="card p-0 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="data-table">
-            <thead><tr>
-              <th>Ingredient</th>
-              {!compact && <th>Categorie</th>}
-              {!compact && <th>Fournisseur</th>}
-              <th className="min-w-[180px]">Stock</th>
-              <th>Statut</th>
-            </tr></thead>
+          <table className="data-table w-full">
+            <thead>
+              <tr>
+                <th>Ingrédient</th>
+                <th>Quantité</th>
+                <th>Niveau de stock</th>
+                <th>Seuil critique</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
             <tbody>
               {matierespremieres.map(mp => {
-                const isLow = mp.stock_actuel_kg <= mp.stock_securite_kg;
-                const isCrit = mp.stock_actuel_kg <= mp.stock_securite_kg * 0.7;
+                const isCrit = mp.statut === 'Critique';
+                const isWarn = mp.statut === 'Moyen';
+                const hasBar = mp.seuil > 0 && typeof mp.quantite === 'number';
+                const max = mp.seuil * 3;
+                const pct = hasBar ? Math.min((mp.quantite / max) * 100, 100) : 0;
+                const seuilPct = 33.33; // seuil / (seuil*3)
+                const barColor = isCrit ? '#DC3545' : isWarn ? '#F59E0B' : '#6B8F71';
+
                 return (
                   <tr key={mp.id}>
+                    <td className="font-medium text-bleu-profond text-[13px]">{mp.nom}</td>
                     <td>
-                      <div className="flex items-center gap-2">
-                        {getIcon(mp.categorie)}
-                        <div>
-                          <p className="text-[13px] font-medium text-bleu-profond">{mp.nom}</p>
-                          {mp.flux_tendu && <span className="text-[9px] text-bleu-info font-semibold uppercase tracking-wider">Flux tendu</span>}
-                          {mp.allergene && <span className="text-[9px] text-rouge-alerte font-semibold uppercase tracking-wider ml-1">&#9888; {mp.type_allergene}</span>}
-                        </div>
-                      </div>
+                      <span className="text-[13px] font-semibold text-bleu-profond">
+                        {typeof mp.quantite === 'number' ? mp.quantite.toLocaleString('fr-FR') : mp.quantite}
+                      </span>
+                      <span className="text-[11px] text-gris-ardoise ml-1">{mp.unite}</span>
                     </td>
-                    {!compact && <td className="text-[13px] text-gris-ardoise">{mp.categorie}</td>}
-                    {!compact && <td className="text-[13px] text-gris-ardoise">{mp.fournisseur}</td>}
-                    <td><StockBar current={mp.stock_actuel_kg} max={mp.stock_securite_kg * 2.5} critical={mp.stock_securite_kg} /></td>
+                    <td style={{ minWidth: '160px' }}>
+                      {hasBar ? (
+                        <div className="relative h-2.5 rounded-full" style={{ backgroundColor: 'rgba(226,232,240,0.7)' }}>
+                          {/* Remplissage */}
+                          <div
+                            className="absolute top-0 left-0 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${pct}%`, backgroundColor: barColor }}
+                          />
+                          {/* Marqueur seuil critique — rouge */}
+                          <div
+                            className="absolute top-[-3px] bottom-[-3px] w-[2px] rounded-full z-10"
+                            style={{ left: `${seuilPct}%`, backgroundColor: '#DC3545' }}
+                          />
+                          {/* Marqueur seuil moyen — orange (2× seuil = 66,67 %) */}
+                          <div
+                            className="absolute top-[-3px] bottom-[-3px] w-[2px] rounded-full z-10"
+                            style={{ left: '66.67%', backgroundColor: '#F59E0B' }}
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-[11px] text-gris-ardoise italic">—</span>
+                      )}
+                    </td>
+                    <td className="text-[12px] text-gris-ardoise">
+                      {mp.seuil > 0
+                        ? `${mp.seuil.toLocaleString('fr-FR')} ${mp.unite !== 'Stock suffisant' ? mp.unite : ''}`
+                        : '—'}
+                    </td>
                     <td>
-                      <span className={`badge ${isCrit ? 'badge-danger' : isLow ? 'badge-warning' : 'badge-success'}`}>
-                        {isCrit ? <AlertCircle className="w-3 h-3" /> : isLow ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
-                        {isCrit ? 'Critique' : isLow ? 'Bas' : 'OK'}
+                      <span className={`badge ${isCrit ? 'badge-danger' : isWarn ? 'badge-warning' : 'badge-success'}`}>
+                        {isCrit || isWarn
+                          ? <AlertCircle className="w-3 h-3" />
+                          : <CheckCircle2 className="w-3 h-3" />}
+                        {mp.statut}
                       </span>
                     </td>
                   </tr>
@@ -119,112 +212,41 @@ function MPSection({ compact }) {
             </tbody>
           </table>
         </div>
-      )}
+      </div>
     </motion.div>
   );
 }
 
-function PFSection({ compact }) {
-  const { produitsFinis } = useData();
-
-  if (compact) {
-    return (
-      <motion.div variants={fadeUp} className="card p-6">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-9 h-9 rounded-xl bg-bleu-info/8 flex items-center justify-center"><Package className="w-4.5 h-4.5 text-bleu-info" /></div>
-          <div><h3 className="text-[15px] font-semibold text-bleu-profond">Produits Finis</h3><p className="text-[11px] text-gris-ardoise">Inventaire rapide</p></div>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {produitsFinis.map(pf => {
-            const isCrit = pf.stock_kg < pf.seuil_critique_kg;
-            return (
-              <div key={pf.id} className={`p-3 rounded-xl border text-center ${isCrit ? 'border-rouge-alerte/25 bg-rouge-alerte/3' : 'border-gris-clair/50 bg-white'}`}>
-                <div className="w-3 h-3 rounded-full mx-auto mb-2" style={{ backgroundColor: pf.couleur }} />
-                <p className="text-[12px] font-medium text-bleu-profond">{pf.variante}</p>
-                <p className={`text-lg font-light mt-1 ${isCrit ? 'text-rouge-alerte' : 'text-bleu-profond'}`}>{pf.stock_kg}<span className="text-[10px] text-gris-ardoise"> kg</span></p>
-              </div>
-            );
-          })}
-        </div>
-      </motion.div>
-    );
-  }
-
+/* ===== RÉGLAGES ===== */
+function TabReglages({ onBack }) {
   return (
-    <motion.div variants={fadeUp} className="card p-6">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-9 h-9 rounded-xl bg-bleu-info/8 flex items-center justify-center"><Package className="w-4.5 h-4.5 text-bleu-info" /></div>
-        <div><h3 className="text-[15px] font-semibold text-bleu-profond">Produits Finis</h3><p className="text-[11px] text-gris-ardoise">Inventaire par variante</p></div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {produitsFinis.map(pf => {
-          const pct = (pf.stock_kg / (pf.seuil_critique_kg * 3)) * 100;
-          const isCrit = pf.stock_kg < pf.seuil_critique_kg;
-          return (
-            <div key={pf.id} className={`p-4 rounded-xl border transition-all hover:shadow-sm ${isCrit ? 'border-rouge-alerte/25 bg-rouge-alerte/3' : 'border-gris-clair/50 bg-white'}`}>
-              <div className="flex items-center justify-between mb-3">
-                <VariantBadge variante={pf.variante} couleur={pf.couleur} />
-                {pf.allergene && <span className="badge badge-danger text-[9px]">Allergene</span>}
-                {isCrit && !pf.allergene && <span className="badge badge-danger text-[9px]">Critique</span>}
-              </div>
-              <p className="text-2xl font-light text-bleu-profond">{pf.stock_kg} <span className="text-sm text-gris-ardoise">kg</span></p>
-              <p className="text-[11px] text-gris-ardoise mt-0.5">Seuil {pf.seuil_critique_kg} kg - {pf.prix_vente_kg}&euro;/kg</p>
-              <div className="mt-3 progress-bar">
-                <div className="progress-bar-fill" style={{ width: `${Math.min(pct, 100)}%`, background: isCrit ? '#DC3545' : pf.couleur }} />
-              </div>
-            </div>
-          );
-        })}
+    <motion.div variants={fadeUp} initial="initial" animate="animate">
+      <BackButton onBack={onBack} label="Entrepôt" />
+      <div className="card p-12 flex flex-col items-center justify-center text-center border-dashed">
+        <div className="w-16 h-16 bg-or-brosse/10 rounded-full flex items-center justify-center mb-4">
+          <Settings className="w-8 h-8 text-or-brosse" />
+        </div>
+        <h3 className="text-lg font-bold text-bleu-profond mb-2">Réglages de l'entrepôt</h3>
+        <p className="text-sm text-gris-ardoise max-w-md">
+          Fonctionnalité à venir — configuration des seuils d'alerte et gestion des fournisseurs.
+        </p>
       </div>
     </motion.div>
   );
 }
 
-function EmballageSection() {
-  const { emballages } = useData();
-  return (
-    <motion.div variants={fadeUp} className="card p-6">
-      <div className="flex items-center gap-3 mb-5">
-        <div className="w-9 h-9 rounded-xl bg-gris-ardoise/8 flex items-center justify-center"><Box className="w-4.5 h-4.5 text-gris-ardoise" /></div>
-        <div><h3 className="text-[15px] font-semibold text-bleu-profond">Emballages</h3><p className="text-[11px] text-gris-ardoise">Cartons & films</p></div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {emballages.map(emb => {
-          const stock = emb.stock_unites || emb.stock_metres;
-          const seuil = emb.seuil_critique;
-          const unite = emb.stock_unites ? 'u.' : 'm';
-          const pct = (stock / (seuil * 5)) * 100;
-          return (
-            <div key={emb.id} className="p-4 rounded-xl border border-gris-clair/50 bg-white">
-              <p className="text-[13px] font-semibold text-bleu-profond mb-1">{emb.nom}</p>
-              <p className="text-xl font-light text-bleu-profond">{stock.toLocaleString('fr-FR')} <span className="text-sm text-gris-ardoise">{unite}</span></p>
-              <p className="text-[11px] text-gris-ardoise">Seuil {seuil.toLocaleString('fr-FR')} {unite}</p>
-              <div className="mt-2 progress-bar"><div className="progress-bar-fill" style={{ width: `${Math.min(pct, 100)}%`, background: stock <= seuil ? '#C2703E' : '#94A3B8' }} /></div>
-            </div>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-}
-
+/* ===== MAIN ===== */
 export default function Entrepot() {
-  const { isCompact } = useViewMode();
+  const [view, setView] = useState('home');
 
   return (
-    <motion.div variants={pageV} initial="initial" animate="animate" exit="exit">
-      <motion.div variants={stagger} initial="initial" animate="animate" className="space-y-6">
-        {!isCompact && (
-          <motion.div variants={fadeUp} className="card p-4 flex items-center gap-3 border-l-4 border-bleu-info">
-            <Info className="w-4 h-4 text-bleu-info flex-shrink-0" />
-            <p className="text-[13px] text-gris-ardoise"><span className="font-semibold text-bleu-profond">Suivi temps reel.</span> Stocks mis a jour apres chaque OF et expedition.</p>
-          </motion.div>
-        )}
-        {!isCompact && <AllergeneAlert />}
-        <MPSection compact={isCompact} />
-        <PFSection compact={isCompact} />
-        {!isCompact && <EmballageSection />}
-      </motion.div>
+    <motion.div variants={pageV} initial="initial" animate="animate" exit="exit" className="h-full">
+      <AnimatePresence mode="wait">
+        {view === 'home' && <EntrepotHome key="home" onNavigate={setView} />}
+        {view === 'pf' && <TabProduitsFinis key="pf" onBack={() => setView('home')} />}
+        {view === 'mp' && <TabMatieresPremieres key="mp" onBack={() => setView('home')} />}
+        {view === 'reglages' && <TabReglages key="reglages" onBack={() => setView('home')} />}
+      </AnimatePresence>
     </motion.div>
   );
 }

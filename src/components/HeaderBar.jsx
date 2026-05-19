@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { ChevronRight, Mountain, DatabaseZap, Database } from 'lucide-react';
+import { ChevronRight, Mountain, LogOut, User } from 'lucide-react';
 import { useData } from '../context/DataContext';
 
 const routeMeta = {
@@ -9,10 +9,9 @@ const routeMeta = {
   '/production': { title: 'Planning de Prod', breadcrumb: ['Sem. 11 — 2026'] },
 };
 
-export default function HeaderBar() {
+export default function HeaderBar({ collapsed, onLogout, profile }) {
   const location = useLocation();
   const meta = routeMeta[location.pathname] || routeMeta['/'];
-  const { isDemoMode, setIsDemoMode } = useData();
 
   return (
     <header className="glass sticky top-0 z-40 px-4 md:px-8 py-3.5 flex items-center justify-between border-b border-slate-200/60">
@@ -36,17 +35,15 @@ export default function HeaderBar() {
       </div>
       
       <div className="flex items-center gap-3">
-        {/* Toggle Mode Démo */}
+        {/* User Profile / Logout */}
         <button
-          onClick={() => setIsDemoMode(!isDemoMode)}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-            isDemoMode 
-              ? 'bg-or-brosse/10 text-or-brosse border border-or-brosse/20'
-              : 'bg-white border border-slate-200 text-gris-ardoise shadow-sm hover:bg-slate-50'
-          }`}
+          onClick={onLogout}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all bg-white border border-slate-200 text-gris-ardoise shadow-sm hover:bg-slate-50 hover:text-red-500"
+          title="Changer de profil"
         >
-          {isDemoMode ? <DatabaseZap className="w-3.5 h-3.5" /> : <Database className="w-3.5 h-3.5" />}
-          <span className="hidden sm:inline">{isDemoMode ? 'Mode Démo' : 'Données Locales'}</span>
+          <User className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline capitalize">{profile}</span>
+          <LogOut className="w-3.5 h-3.5 ml-1" />
         </button>
 
         <div className="w-px h-4 bg-gris-clair hidden md:block" />

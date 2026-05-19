@@ -11,10 +11,17 @@ const navItems = [
   { to: '/production', icon: CalendarClock, label: 'Planning' },
 ];
 
-export default function BottomNav() {
+export default function BottomNav({ profile }) {
+  const filteredNavItems = navItems.filter(item => {
+    if (profile === 'operateur') {
+      return item.to === '/entrepot' || item.to === '/production';
+    }
+    return true;
+  });
+
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 glass z-50 flex items-center justify-around px-2 pb-safe bg-white/90">
-      {navItems.map((item) => (
+      {filteredNavItems.map((item) => (
         <NavLink
           key={item.to}
           to={item.to}

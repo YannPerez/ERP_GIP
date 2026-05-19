@@ -12,7 +12,14 @@ const navItems = [
   { to: '/production', icon: CalendarClock, label: 'Production', sub: 'Planning' },
 ];
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, profile }) {
+  const filteredNavItems = navItems.filter(item => {
+    if (profile === 'operateur') {
+      return item.to === '/entrepot' || item.to === '/production';
+    }
+    return true;
+  });
+
   return (
     <motion.aside
       className="sidebar h-full hidden md:flex flex-col flex-shrink-0 relative z-50"
@@ -39,7 +46,7 @@ export default function Sidebar({ collapsed, onToggle }) {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { DEMO_DATA, EMPTY_DATA, KPI_BASE, generateProductionMensuelle } from '../data';
 
-const STORAGE_KEY = 'rullier-hub-data-v2';
+const STORAGE_KEY = 'rullier-hub-data-v8';
 
 function loadFromStorage() {
   try {
@@ -40,26 +40,23 @@ function computeKPI(data, isDemo, productionMensuelle) {
 }
 
 export default function useLocalData() {
-  const [isDemoMode, setIsDemoMode] = useState(false);
   const [localData, setLocalData] = useState(() => {
     const stored = loadFromStorage();
     if (stored) return stored;
-    return { ...EMPTY_DATA };
+    return { ...DEMO_DATA };
   });
 
   useEffect(() => {
     saveToStorage(localData);
   }, [localData]);
 
-  const activeData = isDemoMode ? DEMO_DATA : localData;
-  const productionMensuelle = generateProductionMensuelle(isDemoMode);
-  const kpiDirection = computeKPI(activeData, isDemoMode, productionMensuelle);
+  const productionMensuelle = generateProductionMensuelle(true);
+  const kpiDirection = computeKPI(localData, true, productionMensuelle);
 
-  // --- Generic CRUD helpers (only affect localData) ---
+  // --- Generic CRUD helpers (affect localData initialized as DEMO_DATA) ---
   const updateCollection = useCallback((key, updater) => {
-    if (isDemoMode) return; // Read-only in demo mode
     setLocalData(prev => ({ ...prev, [key]: updater(prev[key]) }));
-  }, [isDemoMode]);
+  }, []);
 
   const addItem = useCallback((key, item) => {
     updateCollection(key, (arr) => {
@@ -78,29 +75,36 @@ export default function useLocalData() {
     updateCollection(key, (arr) => arr.filter(item => item.id !== id));
   }, [updateCollection]);
 
+  const setSaisieJour = useCallback((dateStr, kg) => {
+    setLocalData(prev => ({
+      ...prev,
+      saisieProduction: { ...prev.saisieProduction, [dateStr]: kg }
+    }));
+  }, []);
+
   const resetToDefaults = useCallback(() => {
-    setLocalData({ ...EMPTY_DATA });
+    setLocalData({ ...DEMO_DATA });
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
   return {
-    isDemoMode,
-    setIsDemoMode,
     // Collections
-    matierespremieres: activeData.matierespremieres,
-    produitsFinis: activeData.produitsFinis,
-    emballages: activeData.emballages || [],
-    clients: activeData.clients || [],
-    commandes: activeData.commandes,
+    matierespremieres: localData.matierespremieres,
+    produitsFinis: localData.produitsFinis,
+    emballages: localData.emballages || [],
+    clients: localData.clients || [],
+    commandes: localData.commandes,
     productionMensuelle,
-    planningProduction: activeData.planningProduction || [],
-    transporteurs: activeData.transporteurs || [],
+    planningProduction: localData.planningProduction || [],
+    saisieProduction: localData.saisieProduction || {},
+    transporteurs: localData.transporteurs || [],
     kpiDirection,
 
     // CRUD
     addItem,
     updateItem,
     deleteItem,
+    setSaisieJour,
     resetToDefaults,
   };
 }
