@@ -9,6 +9,10 @@ const routeMeta = {
   '/production': { title: 'Planning de Prod', breadcrumb: ['Sem. 11 — 2026'] },
 };
 
+function formatDate(date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 export default function HeaderBar({ collapsed, onLogout, profile }) {
   const location = useLocation();
   const meta = routeMeta[location.pathname] || routeMeta['/'];
@@ -49,7 +53,7 @@ export default function HeaderBar({ collapsed, onLogout, profile }) {
         <div className="w-px h-4 bg-gris-clair hidden md:block" />
         <span className="text-xs text-gris-ardoise hidden md:block">Saison 2025–2026</span>
         <div className="w-px h-4 bg-gris-clair hidden md:block" />
-        <span className="text-[10px] md:text-xs text-or-brosse font-medium">12 mars 2026</span>
+        <span className="text-[10px] md:text-xs text-or-brosse font-medium">{formatDate(new Date())}</span>
       </div>
     </header>
   );
